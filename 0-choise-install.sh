@@ -6,7 +6,7 @@ cd ~/cachyos
 echo "Uruchamianie skryptów..."
 sh 1.dotfiles.sh
 sh 2.app.sh
-sh 3.cp-file.sh
+# sh 3.cp-file.sh
 # sh 4.mount-arch-cp-file.sh
 sh 5.ln-root.sh
 # sh 6.virt.sh
