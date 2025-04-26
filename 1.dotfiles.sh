@@ -5,44 +5,44 @@ cd ~/
 
 # Sklonowanie repozytorium .dotfiles
 git clone https://github.com/trebuhw/.dotfiles.git 
+# Klonowanie repozytorium
+log "Klonowanie repozytorium dotfiles..."
+if [ -d ~/.dotfiles ]; then
+    read -p "Katalog ~/.dotfiles już istnieje. Czy chcesz go nadpisać? [y/N] " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        rm -rf ~/.dotfiles
+    else
+        error "Anulowano. Katalog ~/.dotfiles już istnieje."
+        exit 1
+    fi
+fi
 
-# Funkcja do usuwania katalogów lub plików
-remove_items() {
-    for item in "$@"; do
-        if [[ -e $item ]]; then
-            echo "Usuwanie: $item"
-            rm -rv "$item"
-        else
-            echo "Pomijam, brak: $item"
-        fi
-    done
-}
+git clone --depth 1 https://github.com/trebuhw/.dotfiles ~/.dotfiles
+check_success "Nie udało się sklonować repozytorium"
 
-# Usunięcie katalogów ~/.config
-config_dirs=(
-    alacritty btop fastfetch fish foot gtk-2.0 gtk-3.0 gtk-4.0 hypr kitty
-    mako mc nvim nsxiv qt5ct ranger rofi sublime-text swaylock Thunar
-    waybar waypaper wlogout wofi wofifull xfce4 yazi zathura
-)
-remove_items "${config_dirs[@]/#/~/.config/}"
+# Tworzenie kopii zapasowych
+log "Tworzenie kopii zapasowych plików konfiguracyjnych..."
+[ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.bak
+[ -f ~/.bash_logout ] && mv ~/.bash_logout ~/.bash_logout.bak
+[ -f ~/.bash_profile ] && mv ~/.bash_profile ~/.bash_profile.bak
+[ -f ~/.gtkrc-2.0 ] && mv ~/.gtkrc-2.0 ~/.gtkrc-2.0.bak
+[ -d ~/.config/gtk-2.0 ] && mv ~/.config/gtk-2.0 ~/gtk-2.0.bak
+[ -d ~/.config/gtk-3.0 ] && mv ~/.config/gtk-3.0 ~/gtk-3.0.bak
+[ -d ~/.config/gtk-4.0 ] && mv ~/.config/gtk-4.0 ~/gtk-4.0.bak
 
-# Usunięcie katalogów ~/.icons
-remove_items ~/.icons/default
+# Tworzenie kopii zapasowych
+log "Tworzenie kopii zapasowych plików konfiguracyjnych..."
+[ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.bak
+[ -f ~/.bash_logout ] && mv ~/.bash_logout ~/.bash_logout.bak
+[ -f ~/.bash_profile ] && mv ~/.bash_profile ~/.bash_profile.bak
+[ -f ~/.gtkrc-2.0 ] && mv ~/.gtkrc-2.0 ~/.gtkrc-2.0.bak
+[ -d ~/.config/gtk-2.0 ] && mv ~/.config/gtk-2.0 ~/gtk-2.0.bak
+[ -d ~/.config/gtk-3.0 ] && mv ~/.config/gtk-3.0 ~/gtk-3.0.bak
+[ -d ~/.config/gtk-4.0 ] && mv ~/.config/gtk-4.0 ~/gtk-4.0.bak
 
-# Usunięcie katalogów ~/.local/share
-share_dirs=(mc rofi xfce4)
-remove_items "${share_dirs[@]/#/~/.local/share/}"
-
-# Usunięcie plików i katalogów w ~/
-home_items=(~/.moc ~/.vscode ~/.gitignore ~/.vimrc ~/.Xresources)
-remove_items "${home_items[@]}"
-
-# Przejście do sklonowanego katalogu .dotfiles
-cd ~/.dotfiles || { echo "Nie udało się przejść do katalogu ~/.dotfiles"; exit 1; }
-
-# Wykonanie stow (utworzenie dowiązań symbolicznych)
-for item in alacritty btop fastfetch fish foot gtk-2.0 gtk-3.0 gtk-4.0 hypr kitty \
-            mako mc nvim nsxiv qt5ct ranger rofid starship sublime-text swaylock \
-            Thunar waybar waypaper wlogout wofi wofifull xfce4 yazi zathura; do
-    stow "$item"
-done
+# Stow
+log "Tworzenie symlinków za pomocą stow..."
+cd ~/.dotfiles || { error "Nie można przejść do katalogu ~/.dotfiles"; exit 1; }
+stow Xresources/ alacritty/ background/ bash/ btop/ dunst/ fish/ foot/ fonts/ gtk-2.0/ gtk-3.0/ gtk-4.0/ gtkrc-2.0/ hypr/ icons/ kitty/ mako/ mc/ mousepad/ nsxiv/ nvim/ qt5ct/ profile/ ranger/ rofi/ sublime-text/ swappy/ swaylock/ tldr/ themes/ thunar/ vim/ vscode/ waybar/ wezterm/ wlogout/ wofi/ wofifull/ xfce4/ yazi/ zathura/
+check_success "Błąd podczas wykonywania stow"

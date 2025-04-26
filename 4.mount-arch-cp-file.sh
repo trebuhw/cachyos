@@ -26,12 +26,6 @@ else
 fi
 
 
-# etc/
-sudo mv -v /etc/sddm.conf.d /etc/sddm.conf.d.org
-sudo cp -r ~/Archiwum/Linux/archlinux/file/etc/sddm.conf.d /etc
-
-
-
 
 
 

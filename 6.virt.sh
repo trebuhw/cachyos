@@ -6,7 +6,7 @@
 # LC_ALL=C lscpu | grep Virtualization
 
 # Instalacja programów yay lub paru
-paru -S qemu-full qemu-img libvirt virt-install virt-manager virt-viewer edk2-ovmf swtpm guestfs-tools libosinfo iptables
+paru -S --needed --noconfirm qemu-full qemu-img libvirt virt-install virt-manager virt-viewer edk2-ovmf swtpm guestfs-tools libosinfo iptables
 
 # Włączenie usług
 sudo systemctl enable libvirtd
