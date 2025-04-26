@@ -18,9 +18,6 @@ if [ -d ~/.dotfiles ]; then
     fi
 fi
 
-git clone --depth 1 https://github.com/trebuhw/.dotfiles ~/.dotfiles
-check_success "Nie udało się sklonować repozytorium"
-
 # Tworzenie kopii zapasowych
 log "Tworzenie kopii zapasowych plików konfiguracyjnych..."
 [ -f ~/.bashrc ] && mv ~/.bashrc ~/.bashrc.bak
